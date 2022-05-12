@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: aws-lambda-docker-ge
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+#Globals:
+#  Function:
+#    Timeout: 45
+#    MemorySize: 512
+
+Resources:
+#  ExampleApiCertificate:
+#    Type: AWS::CertificateManager::Certificate
+#    Properties:
+#      DomainName: api.example.com
+#      ValidationMethod: DNS
+  GEValidationsApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: GE Validations Api Gateway
+      StageName: Staging  # The stage and resource determine the path of the endpoint: /Staging/validation
+#      Domain:  # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-api-domainconfiguration.html
+#        DomainName: www.example.com
+#        CertificateArn: !Ref ExampleApiCertificate
+#        BasePath:
+#          - foo
+#          - bar
+#      Auth:
+#        Authorizers:
+#          BasicAuthorizer:
+#            FunctionPayloadType: TOKEN
+#            FunctionArn: !ImportValue BasicAuthorizerFunction-Arn
+#            Identity:
+#              Header: Authorization
+#              ValidationExpression: ^[Bb]earer [-0-9a-zA-z\.]*$
+#              ReauthorizeEvery: 0
+#        DefaultAuthorizer: BasicAuthorizer
+  RunGEValidationsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: RunGEValidations
+      ImageUri: 479470245610.dkr.ecr.eu-central-1.amazonaws.com/run-ge-validation:latest
+      PackageType: Image
+      Timeout: 45
+      MemorySize: 512
+      Events:
+        RunValidationApi:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            RestApiId: !Ref GEValidationsApiGateway  # tells the Lambda to attach to the created API Gateway.
+            Path: /validation
+            Method: get
+      Policies:
+        - S3FullAccessPolicy:
+            BucketName: validation-suites # bucket name without arn
+        - S3FullAccessPolicy:
+            BucketName: validation-results2 # bucket name without arn
+        - S3FullAccessPolicy:
+            BucketName: datadocs2 # bucket name without arn
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  GEValidationsApiGateway:
+    Description: 'API Gateway endpoint URL for Test stage - run GE validations'
+    Value: !Sub 'https://${GEValidationsApiGateway}.execute-api.${AWS::Region}.amazonaws.com/Staging/validation/'
+  GEValidationsApiGatewayRestApiId:
+    Description: 'API Gateway ARN for Basic AWS API Gateway'
+    Value: !Ref GEValidationsApiGateway
+    Export:
+      Name: GEValidationsApiGateway-RestApiId
+  GEValidationsApiGatewayRootResourceId:
+    Value: !GetAtt GEValidationsApiGateway.RootResourceId
+    Export:
+      Name: GEValidationsApiGateway-RootResourceId

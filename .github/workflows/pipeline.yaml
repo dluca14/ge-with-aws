@@ -103,7 +103,8 @@ jobs:
             --s3-bucket ${TESTING_ARTIFACTS_BUCKET} \
             --no-fail-on-empty-changeset \
             --role-arn ${TESTING_CLOUDFORMATION_EXECUTION_ROLE} \
-            --image-repository ${TESTING_IMAGE_REPOSITORY}
+            --image-repository ${TESTING_IMAGE_REPOSITORY} \
+            --no-confirm-changeset
 
   build-and-package:
     if: github.ref == 'refs/heads/main'
@@ -197,7 +198,8 @@ jobs:
             --s3-bucket ${TESTING_ARTIFACTS_BUCKET} \
             --no-fail-on-empty-changeset \
             --role-arn ${TESTING_CLOUDFORMATION_EXECUTION_ROLE} \
-            --image-repository ${TESTING_IMAGE_REPOSITORY}
+            --image-repository ${TESTING_IMAGE_REPOSITORY} \
+            --no-confirm-changeset
 
   integration-test:
     if: github.ref == 'refs/heads/main'
@@ -243,4 +245,5 @@ jobs:
             --s3-bucket ${PROD_ARTIFACTS_BUCKET} \
             --no-fail-on-empty-changeset \
             --role-arn ${PROD_CLOUDFORMATION_EXECUTION_ROLE} \
-            --image-repository ${PROD_IMAGE_REPOSITORY}
+            --image-repository ${PROD_IMAGE_REPOSITORY} \
+            --no-confirm-changeset

@@ -10,7 +10,7 @@ pipeline_user = "arn:aws:iam::479470245610:user/aws-sam-cli-managed-dev-pipeline
 pipeline_execution_role = "arn:aws:iam::479470245610:role/aws-sam-cli-managed-dev-pipe-PipelineExecutionRole-1F290MH2TFDKF"
 cloudformation_execution_role = "arn:aws:iam::479470245610:role/aws-sam-cli-managed-dev-p-CloudFormationExecutionR-1WBK8TJ2ZOG7L"
 artifacts_bucket = "aws-sam-cli-managed-dev-pipeline-artifactsbucket-18vzd1ltl0hs"
-image_repository = "479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-dev-repo"
+image_repository = ""
 region = "eu-central-1"
 
 [prod]
@@ -19,5 +19,5 @@ region = "eu-central-1"
 pipeline_execution_role = "arn:aws:iam::479470245610:role/aws-sam-cli-managed-prod-pip-PipelineExecutionRole-AZY4ZL5LD6F5"
 cloudformation_execution_role = "arn:aws:iam::479470245610:role/aws-sam-cli-managed-prod-CloudFormationExecutionR-NW3105V7XOP3"
 artifacts_bucket = "aws-sam-cli-managed-prod-pipeline-artifactsbucket-6m3g0gvwkin8"
-image_repository = "479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-prod-repo"
+image_repository = ""
 region = "eu-central-1"

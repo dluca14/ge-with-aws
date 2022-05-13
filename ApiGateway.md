@@ -56,7 +56,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   GeApiGateway:
     Description: 'API endpoint description'
-    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/<stage:Test/Prod>/<resource>/'
+    Value: !Sub 'https://${GEValidationsApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${AWS::StackName}/validation/'
 ```
 - In order to configure ApiGateway `DomainName` you need to create a new domain in `AWS Route 53`
 

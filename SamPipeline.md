@@ -17,3 +17,7 @@
 - Artifact bucket
 
 2. You need to use the Security credentials of newly created Pipeline IAM user to config GitHub repo Secrets
+
+
+## Find more info in this article:
+https://www.antstack.io/blog/sam-pipeline-github-actions/

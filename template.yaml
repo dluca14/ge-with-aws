@@ -17,8 +17,8 @@ Resources:
   GEValidationsApiGateway:
     Type: AWS::Serverless::Api
     Properties:
-      Name: GE Validations Api Gateway
-      StageName: Staging  # The stage and resource determine the path of the endpoint: /Staging/validation
+      Name: !Sub GEValidationsApiGateway-${AWS::StackName}
+      StageName: ${AWS::ApiGateway::Stage} # The stage and resource determine the path of the endpoint: /Staging/validation
 #      Domain:  # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-api-domainconfiguration.html
 #        DomainName: www.example.com
 #        CertificateArn: !Ref ExampleApiCertificate
@@ -38,7 +38,7 @@ Resources:
   RunGEValidationsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      FunctionName: RunGEValidations
+      FunctionName: !Sub RunGEValidations-${AWS::StackName}
       ImageUri: 479470245610.dkr.ecr.eu-central-1.amazonaws.com/run-ge-validation:latest
       PackageType: Image
       Timeout: 45
@@ -64,7 +64,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   GEValidationsApiGateway:
     Description: 'API Gateway endpoint URL for Test stage - run GE validations'
-    Value: !Sub 'https://${GEValidationsApiGateway}.execute-api.${AWS::Region}.amazonaws.com/Staging/validation/'
+    Value: !Sub 'https://${GEValidationsApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${AWS::StackName}/validation/'
 #  GEValidationsApiGatewayRestApiId:
 #    Description: 'API Gateway ARN for Basic AWS API Gateway'
 #    Value: !Ref GEValidationsApiGateway

@@ -67,7 +67,7 @@ Outputs:
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   GEValidationsApiGateway:
-    Description: !Sub 'API Gateway endpoint URL for ${Stage} stage - run GE validations'
+    Description: 'API Gateway endpoint URL for run GE validations'
     Value: !Sub 'https://${GEValidationsApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/validation/'
 #  GEValidationsApiGatewayRestApiId:
 #    Description: 'API Gateway ARN for Basic AWS API Gateway'

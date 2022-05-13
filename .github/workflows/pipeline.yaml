@@ -12,7 +12,9 @@ on:
 env:
   PIPELINE_USER_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   PIPELINE_USER_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
   SAM_TEMPLATE: template.yaml
+
   TESTING_STACK_NAME: sam-pipe-dev
   TESTING_PIPELINE_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-dev-pipe-PipelineExecutionRole-1F290MH2TFDKF
   TESTING_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-dev-p-CloudFormationExecutionR-1WBK8TJ2ZOG7L
@@ -21,8 +23,8 @@ env:
   # uncomment the line below and add "--image-repository ${TESTING_IMAGE_REPOSITORY}" to
   # testing "sam package" and "sam deploy" commands.
   TESTING_IMAGE_REPOSITORY: '479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-dev-repo'
-#  TESTING_IMAGE_REPOSITORY = '479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-dev-repo'
   TESTING_REGION: eu-central-1
+
   PROD_STACK_NAME: sam-pipe-prod
   PROD_PIPELINE_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-prod-pip-PipelineExecutionRole-AZY4ZL5LD6F5
   PROD_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-prod-CloudFormationExecutionR-NW3105V7XOP3
@@ -31,7 +33,6 @@ env:
   # uncomment the line below and add "--image-repository ${PROD_IMAGE_REPOSITORY}" to
   # prod "sam package" and "sam deploy" commands.
   PROD_IMAGE_REPOSITORY: '479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-prod-repo'
-#  PROD_IMAGE_REPOSITORY = '479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-prod-repo'
   PROD_REGION: eu-central-1
 
 jobs:

@@ -65,12 +65,12 @@ Outputs:
   GEValidationsApiGateway:
     Description: 'API Gateway endpoint URL for Test stage - run GE validations'
     Value: !Sub 'https://${GEValidationsApiGateway}.execute-api.${AWS::Region}.amazonaws.com/Staging/validation/'
-  GEValidationsApiGatewayRestApiId:
-    Description: 'API Gateway ARN for Basic AWS API Gateway'
-    Value: !Ref GEValidationsApiGateway
-    Export:
-      Name: GEValidationsApiGateway-RestApiId
-  GEValidationsApiGatewayRootResourceId:
-    Value: !GetAtt GEValidationsApiGateway.RootResourceId
-    Export:
-      Name: GEValidationsApiGateway-RootResourceId
+#  GEValidationsApiGatewayRestApiId:
+#    Description: 'API Gateway ARN for Basic AWS API Gateway'
+#    Value: !Ref GEValidationsApiGateway
+#    Export:
+#      Name: GEValidationsApiGateway-RestApiId
+#  GEValidationsApiGatewayRootResourceId:
+#    Value: !GetAtt GEValidationsApiGateway.RootResourceId
+#    Export:
+#      Name: GEValidationsApiGateway-RootResourceId

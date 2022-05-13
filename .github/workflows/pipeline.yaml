@@ -12,27 +12,18 @@ on:
 env:
   PIPELINE_USER_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   PIPELINE_USER_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
   SAM_TEMPLATE: template.yaml
-
-  TESTING_STACK_NAME: sam-pipe-dev
-  TESTING_PIPELINE_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-dev-pipe-PipelineExecutionRole-1F290MH2TFDKF
-  TESTING_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-dev-p-CloudFormationExecutionR-1WBK8TJ2ZOG7L
-  TESTING_ARTIFACTS_BUCKET: aws-sam-cli-managed-dev-pipeline-artifactsbucket-18vzd1ltl0hs
-  # If there are functions with "Image" PackageType in your template,
-  # uncomment the line below and add "--image-repository ${TESTING_IMAGE_REPOSITORY}" to
-  # testing "sam package" and "sam deploy" commands.
-  TESTING_IMAGE_REPOSITORY: '479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-dev-repo'
+  TESTING_STACK_NAME: sam-app-dev
+  TESTING_PIPELINE_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-dev-pipe-PipelineExecutionRole-SAO9FOIQOIBC
+  TESTING_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-dev-p-CloudFormationExecutionR-D311B2KSKR9J
+  TESTING_ARTIFACTS_BUCKET: aws-sam-cli-managed-dev-pipeline-artifactsbucket-hwfonrua1yhy
+  TESTING_IMAGE_REPOSITORY: 479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-dev-repo
   TESTING_REGION: eu-central-1
-
-  PROD_STACK_NAME: sam-pipe-prod
-  PROD_PIPELINE_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-prod-pip-PipelineExecutionRole-AZY4ZL5LD6F5
-  PROD_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-prod-CloudFormationExecutionR-NW3105V7XOP3
-  PROD_ARTIFACTS_BUCKET: aws-sam-cli-managed-prod-pipeline-artifactsbucket-6m3g0gvwkin8
-  # If there are functions with "Image" PackageType in your template,
-  # uncomment the line below and add "--image-repository ${PROD_IMAGE_REPOSITORY}" to
-  # prod "sam package" and "sam deploy" commands.
-  PROD_IMAGE_REPOSITORY: '479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-prod-repo'
+  PROD_STACK_NAME: sam-app-prod
+  PROD_PIPELINE_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-prod-pip-PipelineExecutionRole-1EKRNX4XPNWQT
+  PROD_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-prod-CloudFormationExecutionR-1FNVQFSRWMBTY
+  PROD_ARTIFACTS_BUCKET: aws-sam-cli-managed-prod-pipeline-artifactsbucket-15tzt1cy0shsp
+  PROD_IMAGE_REPOSITORY: 479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-prod-repo
   PROD_REGION: eu-central-1
 
 jobs:
@@ -102,10 +93,9 @@ jobs:
             --capabilities CAPABILITY_IAM \
             --region ${TESTING_REGION} \
             --s3-bucket ${TESTING_ARTIFACTS_BUCKET} \
-            --no-fail-on-empty-changeset \
-            --role-arn ${TESTING_CLOUDFORMATION_EXECUTION_ROLE} \
             --image-repository ${TESTING_IMAGE_REPOSITORY} \
-            --no-confirm-changeset
+            --no-fail-on-empty-changeset \
+            --role-arn ${TESTING_CLOUDFORMATION_EXECUTION_ROLE}
 
   build-and-package:
     if: github.ref == 'refs/heads/main'
@@ -134,9 +124,9 @@ jobs:
         run: |
           sam package \
             --s3-bucket ${TESTING_ARTIFACTS_BUCKET} \
+            --image-repository ${TESTING_IMAGE_REPOSITORY} \
             --region ${TESTING_REGION} \
-            --output-template-file packaged-testing.yaml \
-            --image-repository ${TESTING_IMAGE_REPOSITORY}
+            --output-template-file packaged-testing.yaml
 
       - uses: actions/upload-artifact@v2
         with:
@@ -158,9 +148,9 @@ jobs:
         run: |
           sam package \
             --s3-bucket ${PROD_ARTIFACTS_BUCKET} \
+            --image-repository ${PROD_IMAGE_REPOSITORY} \
             --region ${PROD_REGION} \
-            --output-template-file packaged-prod.yaml \
-            --image-repository ${PROD_IMAGE_REPOSITORY}
+            --output-template-file packaged-prod.yaml
 
       - uses: actions/upload-artifact@v2
         with:
@@ -197,10 +187,9 @@ jobs:
             --capabilities CAPABILITY_IAM \
             --region ${TESTING_REGION} \
             --s3-bucket ${TESTING_ARTIFACTS_BUCKET} \
-            --no-fail-on-empty-changeset \
-            --role-arn ${TESTING_CLOUDFORMATION_EXECUTION_ROLE} \
             --image-repository ${TESTING_IMAGE_REPOSITORY} \
-            --no-confirm-changeset
+            --no-fail-on-empty-changeset \
+            --role-arn ${TESTING_CLOUDFORMATION_EXECUTION_ROLE}
 
   integration-test:
     if: github.ref == 'refs/heads/main'
@@ -244,7 +233,6 @@ jobs:
             --capabilities CAPABILITY_IAM \
             --region ${PROD_REGION} \
             --s3-bucket ${PROD_ARTIFACTS_BUCKET} \
-            --no-fail-on-empty-changeset \
-            --role-arn ${PROD_CLOUDFORMATION_EXECUTION_ROLE} \
             --image-repository ${PROD_IMAGE_REPOSITORY} \
-            --no-confirm-changeset
+            --no-fail-on-empty-changeset \
+            --role-arn ${PROD_CLOUDFORMATION_EXECUTION_ROLE}

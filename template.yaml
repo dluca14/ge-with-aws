@@ -39,7 +39,7 @@ Resources:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       FunctionName: !Sub RunGEValidations-${AWS::StackName}
-      ImageUri: !Sub 479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-${Stage}-repo:latest
+      ImageUri: !Sub 479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-${AWS::Stage}-repo:latest
       PackageType: Image
       Timeout: 45
       MemorySize: 512

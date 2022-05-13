@@ -13,13 +13,13 @@ env:
   PIPELINE_USER_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   PIPELINE_USER_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   SAM_TEMPLATE: template.yaml
-  TESTING_STACK_NAME: sam-app-dev
+  TESTING_STACK_NAME: dev-stack
   TESTING_PIPELINE_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-dev-pipe-PipelineExecutionRole-SAO9FOIQOIBC
   TESTING_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-dev-p-CloudFormationExecutionR-D311B2KSKR9J
   TESTING_ARTIFACTS_BUCKET: aws-sam-cli-managed-dev-pipeline-artifactsbucket-hwfonrua1yhy
   TESTING_IMAGE_REPOSITORY: 479470245610.dkr.ecr.eu-central-1.amazonaws.com/ge-dev-repo
   TESTING_REGION: eu-central-1
-  PROD_STACK_NAME: sam-app-prod
+  PROD_STACK_NAME: prod-stack
   PROD_PIPELINE_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-prod-pip-PipelineExecutionRole-1EKRNX4XPNWQT
   PROD_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::479470245610:role/aws-sam-cli-managed-prod-CloudFormationExecutionR-1FNVQFSRWMBTY
   PROD_ARTIFACTS_BUCKET: aws-sam-cli-managed-prod-pipeline-artifactsbucket-15tzt1cy0shsp

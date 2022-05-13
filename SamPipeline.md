@@ -3,7 +3,7 @@
 ```sam pipeline init --bootstrap```
 2. Does your application contain any IMAGE type Lambda functions?
 - choose: y
-- Obs: you should already have 2 repos created for dev/prod
+- Obs: you should already have 2 repos created for dev/prod with the naming convention: ge-${Stage}-repo
 - In order to pass the repo-arn type this command in a different terminal window: 
 ```aws ecr describe-repositories```
 3. What is the GitHub secret name for pipeline user account access key ID/secred?

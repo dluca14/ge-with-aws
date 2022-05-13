@@ -17,8 +17,8 @@ Resources:
   GEValidationsApiGateway:
     Type: AWS::Serverless::Api
     Properties:
-      Name: !Sub GEValidationsApiGateway-${AWS::StackName}
-      StageName: ${AWS::ApiGateway::Stage} # The stage and resource determine the path of the endpoint: /Staging/validation
+      Name: GEValidationsApiGateway
+      StageName: Staging # The stage and resource determine the path of the endpoint: /Staging/validation
 #      Domain:  # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-api-domainconfiguration.html
 #        DomainName: www.example.com
 #        CertificateArn: !Ref ExampleApiCertificate

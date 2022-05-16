@@ -89,7 +89,7 @@ jobs:
       - name: Deploy to feature stack in the testing account
         shell: bash
         run: |
-          sam deploy --stack-name dev$(echo ${GITHUB_REF##*/} | tr -cd '[a-zA-Z0-9-]') \
+          sam deploy --stack-name $(echo ${GITHUB_REF##*/} | tr -cd '[a-zA-Z0-9-]') \
             --parameter-overrides Stage=feature \
             --capabilities CAPABILITY_IAM \
             --region ${TESTING_REGION} \

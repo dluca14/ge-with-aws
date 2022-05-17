@@ -59,6 +59,82 @@ Outputs:
 ```
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+### Note:
+- you can add Authorization config for your ApiGateway:
+```
+ Auth:
+   Authorizers:
+     BasicAuthorizer:
+       FunctionPayloadType: TOKEN
+       FunctionArn: !ImportValue BasicAuthorizerFunction-Arn
+       Identity:
+         Header: Authorization
+         ValidationExpression: ^[Bb]earer [-0-9a-zA-z\.]*$
+         ReauthorizeEvery: 0
+   DefaultAuthorizer: BasicAuthorizer
+```
+- you can add request validation in ApiGateway:
+```
+Resources:
+
+  EchoWithValidationAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: echo-lpi-validate
+      StageName: Prod
+      TracingEnabled: True
+      Models: 
+        Inventor:
+          type: object
+          required:
+            - name
+            - wiki
+          properties:
+            name:
+              type: string
+            wiki:
+              type: string
+            knownFor:
+              type: string
+
+  EchoWithValidationFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: EchoFunctionJS
+      Handler: app.lambdaHandler
+      Runtime: nodejs10.x
+      Events:
+        Request:
+          Type: Api 
+          Properties:
+            RestApiId: 
+              Ref: EchoWithValidationAPI
+            Path: /echo
+            Method: post
+            RequestModel:
+              Model: Inventor
+              Required: true
+
+# more info here: https://github.com/mindit-io/aws-sam-serverless-services
+```
+- you can make a custom Domain for your ApiGateway Output: for this you need to register a domain in `Route 53`
+```
+ExampleApiCertificate:
+  Type: AWS::CertificateManager::Certificate
+  Properties:
+    DomainName: api.example.com
+    ValidationMethod: DNS
+
+YourApiGateway:
+ Properties:
+   Domain:  # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-api-domainconfiguration.html
+     DomainName: www.example.com
+     CertificateArn: !Ref ExampleApiCertificate
+     BasePath:
+       - foo
+       - bar                
+```
+
 ### Resources:
 - https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy.html
 

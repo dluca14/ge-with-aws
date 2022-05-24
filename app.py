@@ -5,14 +5,34 @@ from great_expectations.checkpoint.types.checkpoint_result import CheckpointResu
 from great_expectations.data_context import DataContext
 
 
-def handler(event, context):
-    data_context: DataContext = DataContext(os.getcwd() + '/project/great_expectations')
+class ErrorResponse(Exception):
+    def __init__(self, message='An error occurred', status_code=500):
+        self.status_code = status_code
+        self.body = json.dumps(message)
+        self.headers = {
+            'Content-Type': 'application/json',
+        }
 
-    result: CheckpointResult = data_context.run_checkpoint(
-        checkpoint_name="getting_started_checkpoint",
-        batch_request=None,
-        run_name=None,
-    )
+    def __str__(self):
+        return {'status_code': self.status_code,
+                'body': self.body,
+                'headers': self.headers}
+
+
+def handler(event, context):
+    try:
+        data_context: DataContext = DataContext(os.getcwd() + '/project/great_expectations')
+        result: CheckpointResult = data_context.run_checkpoint(
+            checkpoint_name="getting_started_checkpoint",
+            batch_request=None,
+            run_name=None,
+        )
+    except Exception as _e:
+        e = _e
+        if not isinstance(e, ErrorResponse):
+            e = ErrorResponse('Error while running checkpoint results')
+
+        return e.__str__()
 
     body = {
         "message": "Your checkpoint executed unsuccessfully!",

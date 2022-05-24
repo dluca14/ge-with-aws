@@ -45,7 +45,7 @@ results as well as data-docs also in S3.
     - In order to pass the repo-arn type this command in a different terminal window: 
 ```aws ecr describe-repositories```
 3. What is the GitHub secret name for pipeline user account access key ID/secret?
-    - type: AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY
+    - type: `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`
 4. After config completes edit resulted`.github/workflows/pipeline.yaml`:
  add `--parameter-overrides Stage=<stage_name> \` under `sam deploy` command according to stage.
 

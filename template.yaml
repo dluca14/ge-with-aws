@@ -7,39 +7,34 @@ Parameters:
     Type: String
     Default: dev
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 45
     MemorySize: 512
 
 Resources:
-#  ExampleApiCertificate:
-#    Type: AWS::CertificateManager::Certificate
-#    Properties:
-#      DomainName: api.example.com
-#      ValidationMethod: DNS
   GEValidationsApiGateway:
     Type: AWS::Serverless::Api
     Properties:
       Name: !Sub GEValidationsApiGateway-${AWS::StackName}
       StageName: !Ref Stage # The stage name will be passed as an param on sam deploy when building the pipelines
-#      Domain:  # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-api-domainconfiguration.html
-#        DomainName: www.example.com
-#        CertificateArn: !Ref ExampleApiCertificate
-#        BasePath:
-#          - foo
-#          - bar
-#      Auth:
-#        Authorizers:
-#          BasicAuthorizer:
-#            FunctionPayloadType: TOKEN
-#            FunctionArn: !ImportValue BasicAuthorizerFunction-Arn
-#            Identity:
-#              Header: Authorization
-#              ValidationExpression: ^[Bb]earer [-0-9a-zA-z\.]*$
-#              ReauthorizeEvery: 0
-#        DefaultAuthorizer: BasicAuthorizer
+      GatewayResponses:
+        MISSING_AUTHENTICATION_TOKEN:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+              Cache-Control: "'no-cache'"
+              Content-Type: "'application/json'"
+          ResponseTemplates:
+            "application/json": '{"message":"$context.error.messageString"}'
+          #                                  "type": "$context.error.responseType",
+          #                                  "statusCode": "'404'",
+          #                                  "stage": "$context.stage",
+          #                                  "resourcePath": "$context.resourcePath",
+          #                                  "stageVariables.a": "$stageVariables.a"}'
+          StatusCode: '404'
+
   RunGEValidationsFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -62,9 +57,6 @@ Resources:
             BucketName: datadocs2 # bucket name without arn
 
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   GEValidationsApiGateway:
     Description: 'API Gateway endpoint URL for run GE validations'
     Value: !Sub 'https://${GEValidationsApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/validation/'

@@ -1,6 +1,6 @@
 ##CloudFront
 Amazon CloudFront is a content delivery network (CDN) service built for high performance, security, and developer convenience.
-![img.png](img.png)
+![img.png](imgs/img.png)
 
 **CloudFront** is ideal for lightweight, short-running functions for use cases like the following:
 - Cache key normalization – You can transform HTTP request attributes (headers, query strings, cookies, and even the URL path) to create an optimal cache key, which can improve your cache hit ratio.
